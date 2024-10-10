@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar y Ordenar Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    
+    <div id="producto-form">
+        <input type="text" id="nombreProducto" placeholder="Nombre del Producto">
+        <input type="number" id="precioProducto" placeholder="Precio del Producto">
+        <button id="agregarBtn">Agregar Producto</button>
+    </div>
+
+    <div id="eliminar-form">
+        <input type="text" id="nombreEliminar" placeholder="Nombre del Producto a Eliminar">
+        <button id="eliminarBtn">Eliminar Producto</button>
+    </div>
+
+    <div id="resultado">
+        <h2>Productos en la lista</h2>
+        <ul id="listaProductos"></ul>
+        <p id="totalCosto"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
