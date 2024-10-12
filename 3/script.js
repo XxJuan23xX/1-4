@@ -1,51 +1,65 @@
 
-class ListaAlumnos {
-    constructor() {
-        this.alumnosAprobados = [];
-        this.alumnosReprobados = [];
-    }
-
-    agregarAlumno(nombre, calificacion) {
-        if (calificacion >= 7) {
-            this.alumnosAprobados.push({ nombre, calificacion });
-        } else {
-            this.alumnosReprobados.push({ nombre, calificacion });
-        }
-        this.mostrarAlumnos();
-    }
-
-    mostrarAlumnos() {
-        const listaAprobados = document.getElementById('listaAprobados');
-        const listaReprobados = document.getElementById('listaReprobados');
-        
-        listaAprobados.innerHTML = '';
-        listaReprobados.innerHTML = '';
-
-        this.alumnosAprobados.forEach(alumno => {
-            const li = document.createElement('li');
-            li.textContent = `Nombre: ${alumno.nombre}, Calificación: ${alumno.calificacion}`;
-            listaAprobados.appendChild(li);
-        });
-
-        this.alumnosReprobados.forEach(alumno => {
-            const li = document.createElement('li');
-            li.textContent = `Nombre: ${alumno.nombre}, Calificación: ${alumno.calificacion}`;
-            listaReprobados.appendChild(li);
-        });
+class NodoAlumno {
+    constructor(nombre, calificacion) {
+        this.nombre = nombre;
+        this.calificacion = calificacion;
+        this.siguiente = null; 
     }
 }
 
-const listaAlumnos = new ListaAlumnos();
+class ListaAlumnos {
+    constructor() {
+        this.inicio = null; 
+    }
+
+    agregarAlumno(nombre, calificacion) {
+        const nuevoAlumno = new NodoAlumno(nombre, calificacion);
+
+        if (this.inicio === null) {
+            this.inicio = nuevoAlumno; 
+        } else {
+            let actual = this.inicio;
+            while (actual.siguiente !== null) {
+                actual = actual.siguiente; 
+            }
+            actual.siguiente = nuevoAlumno; 
+        }
+    }
+
+    mostrarAlumnos(elementoDOM) {
+        elementoDOM.innerHTML = ''; 
+
+        let actual = this.inicio;
+        while (actual !== null) {
+            const li = document.createElement('li');
+            li.textContent = `Nombre: ${actual.nombre}, Calificación: ${actual.calificacion}`;
+            elementoDOM.appendChild(li);
+            actual = actual.siguiente;
+        }
+    }
+}
+
+const listaAprobados = new ListaAlumnos();
+const listaReprobados = new ListaAlumnos();
+
+function agregarAlumno() {
+    const nombre = document.getElementById('nombreAlumno').value;
+    const calificacion = parseFloat(document.getElementById('calificacionAlumno').value);
+
+    if (nombre && !isNaN(calificacion)) {
+        if (calificacion >= 7) {
+            listaAprobados.agregarAlumno(nombre, calificacion); 
+        } else {
+            listaReprobados.agregarAlumno(nombre, calificacion); 
+        }
+
+        listaAprobados.mostrarAlumnos(document.getElementById('listaAprobados'));
+        listaReprobados.mostrarAlumnos(document.getElementById('listaReprobados'));
+    } else {
+        alert('Por favor, ingrese un nombre válido y una calificación.');
+    }
+}
 
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("agregarBtn").addEventListener("click", () => {
-        const nombre = document.getElementById('nombreAlumno').value;
-        const calificacion = parseFloat(document.getElementById('calificacionAlumno').value);
-
-        if (nombre && !isNaN(calificacion)) {
-            listaAlumnos.agregarAlumno(nombre, calificacion);
-        } else {
-            alert('Por favor, ingrese un nombre y una calificación válida.');
-        }
-    });
+    document.getElementById("agregarBtn").addEventListener("click", agregarAlumno);
 });
